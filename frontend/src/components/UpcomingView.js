@@ -39,11 +39,11 @@ export default function UpcomingView({ todos, onToggle, onEdit, onDelete, select
     <div className="upcoming-view">
       <h2>📅 Upcoming Tasks</h2>
       <Section title="🔴 Overdue" items={overdue} className="overdue-section" />
-      <Section title="⭐ Aaj" items={todayTodos} />
-      <Section title="📌 Kal" items={tomorrowTodos} />
-      <Section title="📆 Is Hafte" items={thisWeekTodos} />
+      <Section title="⭐ Today" items={todayTodos} />
+      <Section title="📌 Tomorrow" items={tomorrowTodos} />
+      <Section title="📆 This Week" items={thisWeekTodos} />
       {overdue.length === 0 && todayTodos.length === 0 && tomorrowTodos.length === 0 && thisWeekTodos.length === 0 && (
-        <p className="empty-msg">Koi upcoming task nahi hai 🎉</p>
+        <p className="empty-msg">No upcoming tasks 🎉</p>
       )}
     </div>
   );

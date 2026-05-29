@@ -1,4 +1,5 @@
 import { format, isPast, isToday, isTomorrow } from "date-fns";
+import Subtasks from "./Subtasks";
 
 const PRIORITY_COLORS = { low: "#22c55e", medium: "#f59e0b", high: "#ef4444" };
 
@@ -8,8 +9,8 @@ export default function TodoItem({ todo, onToggle, onEdit, onDelete, selected, o
   const getDueDateLabel = () => {
     if (!todo.due_date) return null;
     const date = new Date(todo.due_date + "T00:00:00");
-    if (isToday(date)) return "Aaj";
-    if (isTomorrow(date)) return "Kal";
+    if (isToday(date)) return "Today";
+    if (isTomorrow(date)) return "Tomorrow";
     return format(date, "dd MMM yyyy");
   };
 
@@ -40,7 +41,7 @@ export default function TodoItem({ todo, onToggle, onEdit, onDelete, selected, o
           {todo.due_date && (
             <span className={`due-date ${isOverdue ? "overdue-text" : ""}`}>
               📅 {getDueDateLabel()}
-              {isOverdue && " (Late!)"}
+              {isOverdue && " (Overdue!)"}
             </span>
           )}
         </div>
@@ -50,6 +51,7 @@ export default function TodoItem({ todo, onToggle, onEdit, onDelete, selected, o
         <button className="btn-icon" onClick={() => onEdit(todo)} title="Edit">✏️</button>
         <button className="btn-icon btn-delete" onClick={() => onDelete(todo.id)} title="Delete">🗑️</button>
       </div>
+      <Subtasks todoId={todo.id} />
     </div>
   );
 }

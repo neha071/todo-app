@@ -13,17 +13,17 @@ export default function BulkActions({ todos, selectedIds, setSelectedIds, onDele
     <div className="bulk-actions">
       <label className="select-all">
         <input type="checkbox" checked={allSelected} onChange={toggleSelectAll} />
-        Sab Select Karo
+        Select All
       </label>
 
       {selectedIds.length > 0 && (
         <button className="btn btn-danger" onClick={() => onDeleteSelected(selectedIds)}>
-          🗑️ {selectedIds.length} Delete Karo
+          🗑️ Delete {selectedIds.length} Selected
         </button>
       )}
 
       <button className="btn btn-warning" onClick={onDeleteCompleted}>
-        ✅ Sab Completed Delete Karo
+        ✅ Delete All Completed
       </button>
     </div>
   );
