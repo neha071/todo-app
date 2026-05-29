@@ -117,6 +117,120 @@ body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
 .pagination button { padding: 8px 16px; border: 2px solid #4f46e5; background: white; color: #4f46e5; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
 
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: white;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  animation: slideIn 0.3s ease;
+}
+.toast-success { background: #22c55e; }
+.toast-error { background: #ef4444; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Auth Page */
+.auth-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.auth-box {
+  background: white;
+  border-radius: 20px;
+  padding: 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.auth-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #1f2937;
+  margin-bottom: 24px;
+}
+.auth-tabs {
+  display: flex;
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+.auth-tabs button {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+.auth-tabs button.active {
+  background: white;
+  color: #4f46e5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-weight: 600;
+}
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+.auth-submit { width: 100%; padding: 12px; font-size: 1rem; margin-top: 4px; }
+.auth-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+.auth-switch {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+.auth-switch span {
+  color: #4f46e5;
+  cursor: pointer;
+  font-weight: 600;
+}
+.auth-switch span:hover { text-decoration: underline; }
+
+/* User badge in header */
+.user-badge {
+  background: rgba(255,255,255,0.2);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+}
+
+/* Subtasks */
+.subtasks-wrapper { width: 100%; margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee; }
+.subtasks-toggle { background: none; border: none; color: #6366f1; cursor: pointer; font-size: 13px; padding: 0; }
+.subtasks-list { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+.subtask-item { display: flex; align-items: center; gap: 8px; padding: 4px 8px; background: #f8f9fa; border-radius: 6px; font-size: 14px; }
+.subtask-item.completed span { text-decoration: line-through; color: #999; }
+.subtask-item button { margin-left: auto; background: none; border: none; cursor: pointer; font-size: 12px; }
+.subtask-form { display: flex; gap: 8px; margin-top: 4px; }
+.subtask-form input { flex: 1; padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
+.subtask-form button { padding: 6px 12px; background: #6366f1; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.dark .subtasks-wrapper { border-top-color: #444; }
+.dark .subtask-item { background: #2a2a2a; }
+.dark .subtask-form input { background: #333; border-color: #555; color: white; }
+
 /* Responsive */
 @media (max-width: 600px) {
   .form-row { grid-template-columns: 1fr; }

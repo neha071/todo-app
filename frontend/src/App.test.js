@@ -1,9 +1,12 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('App header is visible', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText('📝 Todo Manager')).toBeInTheDocument();
+});
+
+test('New Todo button is visible', () => {
+  render(<App />);
+  expect(screen.getByText('+ New Todo')).toBeInTheDocument();
 });

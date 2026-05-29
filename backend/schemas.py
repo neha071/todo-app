@@ -9,6 +9,7 @@ class TodoCreate(BaseModel):
     due_date: Optional[str] = None
     priority: str = "medium"
     category: str = "personal"
+    parent_id: Optional[int] = None
 
     @field_validator("title")
     @classmethod
@@ -68,6 +69,8 @@ class TodoResponse(BaseModel):
     priority: str
     category: str
     completed: bool
+    parent_id: Optional[int] = None
+    subtasks: Optional[list] = []
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
 
@@ -76,3 +79,50 @@ class TodoResponse(BaseModel):
 
 class BulkDeleteRequest(BaseModel):
     ids: list[int]
+
+
+class UserCreate(BaseModel):
+    name: str
+    email: str
+    password: str
+
+    @field_validator("name")
+    @classmethod
+    def name_valid(cls, v):
+        if not v or not v.strip():
+            raise ValueError("Name is required")
+        return v.strip()
+
+    @field_validator("email")
+    @classmethod
+    def email_valid(cls, v):
+        if "@" not in v or "." not in v:
+            raise ValueError("Please enter a valid email")
+        return v.lower().strip()
+
+    @field_validator("password")
+    @classmethod
+    def password_valid(cls, v):
+        if len(v) < 6:
+            raise ValueError("Password must be at least 6 characters")
+        return v
+
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    created_at: Optional[datetime]
+
+    model_config = {"from_attributes": True}
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse

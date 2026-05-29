@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import * as api from "../api/todos";
 
-export function useTodos() {
+export function useTodos(token) {
   const [todos, setTodos] = useState([]);
   const [stats, setStats] = useState({ total: 0, completed: 0, active: 0 });
   const [loading, setLoading] = useState(false);
@@ -19,6 +19,7 @@ export function useTodos() {
   });
 
   const fetchTodos = useCallback(async () => {
+    if (!token) return;
     setLoading(true);
     setError(null);
     try {
@@ -35,11 +36,11 @@ export function useTodos() {
       const statsRes = await api.getStats();
       setStats(statsRes.data);
     } catch (err) {
-      setError("Data load nahi ho saka. Backend chal raha hai?");
+      setError("Failed to load data. Is the backend running?");
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  }, [filters, token]);
 
   useEffect(() => {
     fetchTodos();

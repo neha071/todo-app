@@ -27,8 +27,8 @@ export default function TodoForm({ onSubmit, editData, onCancel }) {
 
   const validate = () => {
     const errs = {};
-    if (!form.title.trim()) errs.title = "Title zaroori hai";
-    if (form.title.trim().length < 2) errs.title = "Title kam se kam 2 characters ka hona chahiye";
+    if (!form.title.trim()) errs.title = "Title is required";
+    if (form.title.trim().length < 2) errs.title = "Title must be at least 2 characters";
     return errs;
   };
 
@@ -44,19 +44,19 @@ export default function TodoForm({ onSubmit, editData, onCancel }) {
       setForm({ title: "", description: "", due_date: "", priority: "medium", category: "personal" });
       setErrors({});
     } catch (err) {
-      setErrors({ submit: err.response?.data?.detail || "Kuch galat hua" });
+      setErrors({ submit: err.response?.data?.detail || "Something went wrong" });
     }
   };
 
   return (
     <form className="todo-form" onSubmit={handleSubmit}>
-      <h2>{editData ? "Todo Edit Karo" : "Naya Todo Banao"}</h2>
+      <h2>{editData ? "Edit Todo" : "New Todo"}</h2>
 
       <div className="form-group">
         <label>Title *</label>
         <input
           type="text"
-          placeholder="Kya karna hai?"
+          placeholder="What needs to be done?"
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
         />
@@ -66,7 +66,7 @@ export default function TodoForm({ onSubmit, editData, onCancel }) {
       <div className="form-group">
         <label>Description</label>
         <textarea
-          placeholder="Thodi detail likhو (optional)"
+          placeholder="Add description (optional)"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
         />
@@ -105,7 +105,7 @@ export default function TodoForm({ onSubmit, editData, onCancel }) {
 
       <div className="form-actions">
         <button type="submit" className="btn btn-primary">
-          {editData ? "Update Karo" : "Add Karo"}
+          {editData ? "Update" : "Add Todo"}
         </button>
         {onCancel && (
           <button type="button" className="btn btn-secondary" onClick={onCancel}>
