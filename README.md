@@ -6,17 +6,23 @@ A full-stack Todo application built with FastAPI (Python) backend and React fron
 
 ## 🚀 Features
 
+- ✅ JWT Authentication (Register / Login / Logout)
 - ✅ Add, edit, delete todos
+- ✅ Subtasks support
 - ✅ Mark todos as complete/incomplete
 - ✅ Filter by status, priority, category
 - ✅ Search todos by title
-- ✅ Sort by date, priority, due date
+- ✅ Sort by date, priority
 - ✅ Bulk delete & delete all completed
 - ✅ Upcoming view (Today, Tomorrow, This Week, Overdue)
 - ✅ Dark / Light mode
 - ✅ Pagination
 - ✅ Toast notifications
-- ✅ Mobile responsive
+- ✅ Export to Excel (.xlsx)
+- ✅ Keyboard Shortcuts (N = New Todo, D = Dark Mode, Esc = Close)
+- ✅ Rate Limiting (brute force protection)
+- ✅ Docker support
+- ✅ Automated tests (pytest + React Testing Library)
 
 ---
 
@@ -26,8 +32,11 @@ A full-stack Todo application built with FastAPI (Python) backend and React fron
 |------|-----------|
 | Backend | FastAPI (Python) |
 | Database | SQLite + SQLAlchemy |
+| Auth | JWT (python-jose) + bcrypt |
 | Frontend | React |
 | HTTP Client | Axios |
+| Testing | pytest + React Testing Library |
+| Deployment | Docker + Vercel + Render |
 
 ---
 
@@ -40,18 +49,24 @@ Todo App/
 │   ├── crud.py          # Database operations
 │   ├── models.py        # Database table structure
 │   ├── schemas.py       # Data validation
+│   ├── auth.py          # JWT authentication
 │   ├── database.py      # DB connection
-│   ├── .env             # Environment variables
-│   └── requirements.txt
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── tests/
+│       ├── conftest.py
+│       └── test_todos.py
 │
-└── frontend/
-    ├── src/
-    │   ├── components/  # UI components
-    │   ├── hooks/       # Custom React hooks
-    │   ├── api/         # API calls
-    │   ├── App.js
-    │   └── App.css
-    └── .env
+├── frontend/
+│   ├── src/
+│   │   ├── components/  # UI components
+│   │   ├── hooks/       # Custom React hooks
+│   │   ├── api/         # API calls
+│   │   ├── App.js
+│   │   └── App.css
+│   └── Dockerfile
+│
+└── docker-compose.yml
 ```
 
 ---
@@ -71,14 +86,15 @@ Create `backend/.env` file:
 ```
 DATABASE_URL=sqlite:///./todos.db
 ALLOWED_ORIGINS=http://localhost:3000
+SECRET_KEY=your-secret-key-here
 ```
 
 Run backend:
 ```bash
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload
 ```
 
-Backend will start at: `http://localhost:8000`
+Backend runs at: `http://localhost:8000`
 
 ---
 
@@ -87,19 +103,27 @@ Backend will start at: `http://localhost:8000`
 ```bash
 cd frontend
 npm install
-```
-
-Create `frontend/.env` file:
-```
-REACT_APP_API_URL=http://127.0.0.1:8000
-```
-
-Run frontend:
-```bash
 npm start
 ```
 
-Frontend will start at: `http://localhost:3000`
+Frontend runs at: `http://localhost:3000`
+
+---
+
+### Docker (Run everything with one command)
+
+```bash
+docker-compose up
+```
+
+---
+
+## 🧪 Running Tests
+
+```bash
+cd backend
+pytest tests/ -v
+```
 
 ---
 
@@ -107,14 +131,18 @@ Frontend will start at: `http://localhost:3000`
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
+| POST | `/auth/register` | Register new user |
+| POST | `/auth/login` | Login |
+| GET | `/auth/me` | Get current user |
 | GET | `/todos` | Get all todos |
 | POST | `/todos` | Create new todo |
-| GET | `/todos/{id}` | Get single todo |
 | PUT | `/todos/{id}` | Update todo |
 | PATCH | `/todos/{id}/toggle` | Toggle complete |
 | DELETE | `/todos/{id}` | Delete todo |
 | DELETE | `/todos` | Delete all completed |
 | POST | `/todos/bulk-delete` | Bulk delete |
+| GET | `/todos/{id}/subtasks` | Get subtasks |
+| POST | `/todos/{id}/subtasks` | Add subtask |
 | GET | `/stats` | Get todo stats |
 
 API Docs: `http://localhost:8000/docs`
@@ -123,4 +151,4 @@ API Docs: `http://localhost:8000/docs`
 
 ## 👤 Author
 
-Anil Verma
+Neha Verma
