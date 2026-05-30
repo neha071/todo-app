@@ -62,7 +62,7 @@ export default function App() {
             {darkMode ? "☀️ Light" : "🌙 Dark"}
           </button>
           <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditData(null); }}>
-            {showForm ? "Cancel" : "+ Naya Todo"}
+            {showForm ? "Cancel" : "+ New Todo"}
           </button>
         </div>
       </header>
@@ -79,7 +79,7 @@ export default function App() {
 
       <nav className="view-tabs">
         <button className={view === "all" ? "active" : ""} onClick={() => setView("all")}>
-          📋 Sab Todos
+          📋 All Todos
         </button>
         <button className={view === "upcoming" ? "active" : ""} onClick={() => setView("upcoming")}>
           📅 Upcoming
@@ -100,9 +100,9 @@ export default function App() {
           {error && <div className="error-banner">{error}</div>}
 
           {loading ? (
-            <div className="spinner">⏳ Load ho raha hai...</div>
+            <div className="spinner">⏳ Loading...</div>
           ) : todos.length === 0 ? (
-            <div className="empty-msg">Koi todo nahi hai. Banao ek! 🎯</div>
+            <div className="empty-msg">No todos yet. Create one! 🎯</div>
           ) : (
             <div className="todo-list">
               {todos.map((todo) => (
@@ -129,14 +129,14 @@ export default function App() {
                 disabled={filters.page === 1}
                 onClick={() => setFilters((p) => ({ ...p, page: p.page - 1 }))}
               >
-                ← Pehle
+                ← Previous
               </button>
               <span>Page {filters.page} of {totalPages}</span>
               <button
                 disabled={filters.page === totalPages}
                 onClick={() => setFilters((p) => ({ ...p, page: p.page + 1 }))}
               >
-                Aage →
+                Next →
               </button>
             </div>
           )}

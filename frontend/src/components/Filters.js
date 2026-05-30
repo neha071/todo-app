@@ -8,27 +8,27 @@ export default function Filters({ filters, setFilters }) {
       <input
         type="text"
         className="search-input"
-        placeholder="🔍 Title se search karo..."
+        placeholder="🔍 Search by title..."
         value={filters.search}
         onChange={(e) => update("search", e.target.value)}
       />
 
       <div className="filter-row">
         <select value={filters.status} onChange={(e) => update("status", e.target.value)}>
-          <option value="all">Sab Todos</option>
-          <option value="active">Sirf Active</option>
-          <option value="completed">Sirf Completed</option>
+          <option value="all">All Todos</option>
+          <option value="active">Active Only</option>
+          <option value="completed">Completed Only</option>
         </select>
 
         <select value={filters.priority} onChange={(e) => update("priority", e.target.value)}>
-          <option value="">Sabhi Priority</option>
+          <option value="">All Priorities</option>
           <option value="high">High</option>
           <option value="medium">Medium</option>
           <option value="low">Low</option>
         </select>
 
         <select value={filters.category} onChange={(e) => update("category", e.target.value)}>
-          <option value="">Sabhi Categories</option>
+          <option value="">All Categories</option>
           <option value="work">Work</option>
           <option value="personal">Personal</option>
           <option value="shopping">Shopping</option>
@@ -44,8 +44,8 @@ export default function Filters({ filters, setFilters }) {
         </select>
 
         <select value={filters.sort_order} onChange={(e) => update("sort_order", e.target.value)}>
-          <option value="desc">Newest Pehle</option>
-          <option value="asc">Oldest Pehle</option>
+          <option value="desc">Newest First</option>
+          <option value="asc">Oldest First</option>
         </select>
       </div>
     </div>
