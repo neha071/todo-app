@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTodos } from "./hooks/useTodos";
 import { useAuth } from "./hooks/useAuth";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import TodoForm from "./components/TodoForm";
 import TodoItem from "./components/TodoItem";
 import Filters from "./components/Filters";
@@ -9,6 +10,7 @@ import UpcomingView from "./components/UpcomingView";
 import DeleteConfirmModal from "./components/DeleteConfirmModal";
 import Dashboard from "./components/Dashboard";
 import AuthForm from "./components/AuthForm";
+import { exportToCSV } from "./exportCSV";
 import "./App.css";
 
 export default function App() {
@@ -24,6 +26,14 @@ export default function App() {
   const [deleteId, setDeleteId] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
+  const searchRef = useRef(null);
+
+  useKeyboardShortcuts({
+    onNewTodo: () => { setShowForm(true); setEditData(null); },
+    onToggleDark: () => setDarkMode((d) => !d),
+    onFocusSearch: () => searchRef.current?.focus(),
+    onClose: () => { setShowForm(false); setEditData(null); setDeleteId(null); },
+  });
 
   if (authLoading) return <div className="spinner" style={{ paddingTop: "40vh" }}>⏳ Loading...</div>;
   if (!user) return <AuthForm onLogin={login} onRegister={register} />;
@@ -67,6 +77,7 @@ export default function App() {
           <button className="btn btn-secondary" onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? "☀️ Light" : "🌙 Dark"}
           </button>
+          <button className="btn btn-secondary" onClick={() => exportToCSV(todos)}>📥 Export CSV</button>
           <button className="btn btn-secondary" onClick={logout}>Logout</button>
           <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditData(null); }}>
             {showForm ? "Cancel" : "+ New Todo"}
@@ -97,7 +108,7 @@ export default function App() {
 
       {view === "all" && (
         <>
-          <Filters filters={filters} setFilters={setFilters} />
+          <Filters filters={filters} setFilters={setFilters} searchRef={searchRef} />
           <BulkActions
             todos={todos}
             selectedIds={selectedIds}

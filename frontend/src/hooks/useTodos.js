@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import toast from "react-hot-toast";
 import * as api from "../api/todos";
 
 export function useTodos() {
@@ -50,11 +51,13 @@ export function useTodos() {
 
   const addTodo = async (data) => {
     await api.createTodo(data);
+    toast.success("✅ Todo added successfully!");
     fetchTodos();
   };
 
   const editTodo = async (id, data) => {
     await api.updateTodo(id, data);
+    toast.success("✏️ Todo updated!");
     fetchTodos();
   };
 
@@ -65,16 +68,19 @@ export function useTodos() {
 
   const removeTodo = async (id) => {
     await api.deleteTodo(id);
+    toast.error("🗑️ Todo deleted!");
     fetchTodos();
   };
 
   const removeCompleted = async () => {
     await api.deleteCompleted();
+    toast.success("🧹 Completed todos cleared!");
     fetchTodos();
   };
 
   const removeBulk = async (ids) => {
     await api.bulkDelete(ids);
+    toast.error(`🗑️ ${ids.length} todos deleted!`);
     fetchTodos();
   };
 

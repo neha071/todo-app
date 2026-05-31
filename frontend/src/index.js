@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { Toaster } from 'react-hot-toast';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
@@ -9,6 +10,15 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
+    <Toaster
+      position="top-right"
+      toastOptions={{
+        duration: 3000,
+        style: { borderRadius: '10px', fontWeight: '600', fontSize: '0.9rem' },
+        success: { style: { background: '#22c55e', color: 'white' } },
+        error: { style: { background: '#ef4444', color: 'white' } },
+      }}
+    />
   </React.StrictMode>
 );
 

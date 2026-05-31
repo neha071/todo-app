@@ -65,6 +65,17 @@ export default function Dashboard({ stats, todos }) {
           <div className="dashboard-progress-fill" style={{ width: `${percent}%` }} />
         </div>
       </div>
+      {todayDue > 0 && (
+        <div className="due-alert">
+          ⚠️ {todayDue} todo{todayDue > 1 ? "s are" : " is"} due today! Don't forget!
+        </div>
+      )}
+
+      {overdue > 0 && (
+        <div className="overdue-alert">
+          🔴 {overdue} todo{overdue > 1 ? "s are" : " is"} overdue! Please complete them.
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import * as authApi from "../api/auth";
 
 export function useAuth() {
@@ -22,6 +23,7 @@ export function useAuth() {
     localStorage.setItem("token", res.data.access_token);
     setToken(res.data.access_token);
     setUser(res.data.user);
+    toast.success(`👤 Welcome back, ${res.data.user.name}!`);
   };
 
   const register = async (name, email, password) => {
@@ -29,12 +31,14 @@ export function useAuth() {
     localStorage.setItem("token", res.data.access_token);
     setToken(res.data.access_token);
     setUser(res.data.user);
+    toast.success(`🎉 Account created! Welcome, ${res.data.user.name}!`);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
     setUser(null);
+    toast.success("👋 Logged out successfully!");
   };
 
   return { user, token, loading, login, register, logout };

@@ -1,4 +1,4 @@
-export default function Filters({ filters, setFilters }) {
+export default function Filters({ filters, setFilters, searchRef }) {
   const update = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value, page: 1 }));
   };
@@ -6,9 +6,10 @@ export default function Filters({ filters, setFilters }) {
   return (
     <div className="filters">
       <input
+        ref={searchRef}
         type="text"
         className="search-input"
-        placeholder="🔍 Search by title..."
+        placeholder="🔍 Search by title...  ( Press / to focus )"
         value={filters.search}
         onChange={(e) => update("search", e.target.value)}
       />
