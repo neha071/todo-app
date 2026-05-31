@@ -1,11 +1,32 @@
 from sqlalchemy.orm import Session
-from models import Todo
-from schemas import TodoCreate, TodoUpdate
+from models import Todo, Subtask, User
+from schemas import TodoCreate, TodoUpdate, SubtaskCreate, SubtaskUpdate, UserRegister
+from auth import hash_password, verify_password
 from typing import Optional
+
+
+def get_user_by_email(db: Session, email: str):
+    return db.query(User).filter(User.email == email).first()
+
+
+def create_user(db: Session, user: UserRegister):
+    db_user = User(name=user.name, email=user.email, password_hash=hash_password(user.password))
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def authenticate_user(db: Session, email: str, password: str):
+    user = get_user_by_email(db, email)
+    if not user or not verify_password(password, user.password_hash):
+        return None
+    return user
 
 
 def get_todos(
     db: Session,
+    user_id: int,
     status: Optional[str] = None,
     priority: Optional[str] = None,
     category: Optional[str] = None,
@@ -15,7 +36,7 @@ def get_todos(
     skip: int = 0,
     limit: int = 100,
 ):
-    query = db.query(Todo)
+    query = db.query(Todo).filter(Todo.user_id == user_id)
 
     if status == "active":
         query = query.filter(Todo.completed == False)
@@ -46,8 +67,8 @@ def get_todo(db: Session, todo_id: int):
     return db.query(Todo).filter(Todo.id == todo_id).first()
 
 
-def create_todo(db: Session, todo: TodoCreate):
-    db_todo = Todo(**todo.model_dump())
+def create_todo(db: Session, todo: TodoCreate, user_id: int):
+    db_todo = Todo(**todo.model_dump(), user_id=user_id)
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
@@ -75,8 +96,8 @@ def delete_todo(db: Session, todo_id: int):
     return True
 
 
-def delete_completed_todos(db: Session):
-    deleted = db.query(Todo).filter(Todo.completed == True).delete()
+def delete_completed_todos(db: Session, user_id: int):
+    deleted = db.query(Todo).filter(Todo.completed == True, Todo.user_id == user_id).delete()
     db.commit()
     return deleted
 
@@ -87,7 +108,40 @@ def delete_todos_by_ids(db: Session, ids: list[int]):
     return deleted
 
 
-def get_stats(db: Session):
-    total = db.query(Todo).count()
-    completed = db.query(Todo).filter(Todo.completed == True).count()
+def get_stats(db: Session, user_id: int):
+    total = db.query(Todo).filter(Todo.user_id == user_id).count()
+    completed = db.query(Todo).filter(Todo.user_id == user_id, Todo.completed == True).count()
     return {"total": total, "completed": completed, "active": total - completed}
+
+
+def get_subtasks(db: Session, todo_id: int):
+    return db.query(Subtask).filter(Subtask.todo_id == todo_id).all()
+
+
+def create_subtask(db: Session, todo_id: int, subtask: SubtaskCreate):
+    db_subtask = Subtask(todo_id=todo_id, title=subtask.title)
+    db.add(db_subtask)
+    db.commit()
+    db.refresh(db_subtask)
+    return db_subtask
+
+
+def update_subtask(db: Session, subtask_id: int, subtask: SubtaskUpdate):
+    db_subtask = db.query(Subtask).filter(Subtask.id == subtask_id).first()
+    if not db_subtask:
+        return None
+    update_data = subtask.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(db_subtask, field, value)
+    db.commit()
+    db.refresh(db_subtask)
+    return db_subtask
+
+
+def delete_subtask(db: Session, subtask_id: int):
+    db_subtask = db.query(Subtask).filter(Subtask.id == subtask_id).first()
+    if not db_subtask:
+        return False
+    db.delete(db_subtask)
+    db.commit()
+    return True

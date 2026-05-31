@@ -1,6 +1,46 @@
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, EmailStr
 from typing import Optional
 from datetime import datetime
+
+
+class UserRegister(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+
+    @field_validator("name")
+    @classmethod
+    def name_not_empty(cls, v):
+        if not v or not v.strip():
+            raise ValueError("Name cannot be empty")
+        return v.strip()
+
+    @field_validator("password")
+    @classmethod
+    def password_length(cls, v):
+        if len(v) < 6:
+            raise ValueError("Password must be at least 6 characters")
+        return v
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+    email: str
+    created_at: Optional[datetime]
+
+    model_config = {"from_attributes": True}
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
 
 
 class TodoCreate(BaseModel):
@@ -60,6 +100,31 @@ class TodoUpdate(BaseModel):
         return v
 
 
+class SubtaskCreate(BaseModel):
+    title: str
+
+    @field_validator("title")
+    @classmethod
+    def title_must_not_be_empty(cls, v):
+        if not v or not v.strip():
+            raise ValueError("Title cannot be empty")
+        return v.strip()
+
+
+class SubtaskUpdate(BaseModel):
+    title: Optional[str] = None
+    completed: Optional[bool] = None
+
+
+class SubtaskResponse(BaseModel):
+    id: int
+    todo_id: int
+    title: str
+    completed: bool
+
+    model_config = {"from_attributes": True}
+
+
 class TodoResponse(BaseModel):
     id: int
     title: str
@@ -70,6 +135,7 @@ class TodoResponse(BaseModel):
     completed: bool
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
+    subtasks: list[SubtaskResponse] = []
 
     model_config = {"from_attributes": True}
 

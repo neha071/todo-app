@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { useTodos } from "./hooks/useTodos";
+import { useAuth } from "./hooks/useAuth";
 import TodoForm from "./components/TodoForm";
 import TodoItem from "./components/TodoItem";
 import Filters from "./components/Filters";
 import BulkActions from "./components/BulkActions";
 import UpcomingView from "./components/UpcomingView";
 import DeleteConfirmModal from "./components/DeleteConfirmModal";
+import Dashboard from "./components/Dashboard";
+import AuthForm from "./components/AuthForm";
 import "./App.css";
 
 export default function App() {
+  const { user, loading: authLoading, login, register, logout } = useAuth();
   const {
     todos, stats, loading, error, filters, totalPages,
-    setFilters, addTodo, editTodo, toggleTodo, removeTodo, removeCompleted, removeBulk,
+    setFilters, addTodo, editTodo, toggleTodo, removeTodo, removeCompleted, removeBulk, fetchTodos,
   } = useTodos();
 
   const [view, setView] = useState("all");
@@ -20,6 +24,9 @@ export default function App() {
   const [deleteId, setDeleteId] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
+
+  if (authLoading) return <div className="spinner" style={{ paddingTop: "40vh" }}>⏳ Loading...</div>;
+  if (!user) return <AuthForm onLogin={login} onRegister={register} />;
 
   const handleEdit = (todo) => {
     setEditData(todo);
@@ -36,9 +43,7 @@ export default function App() {
     setEditData(null);
   };
 
-  const handleDelete = (id) => {
-    setDeleteId(id);
-  };
+  const handleDelete = (id) => setDeleteId(id);
 
   const confirmDelete = async () => {
     await removeTodo(deleteId);
@@ -58,9 +63,11 @@ export default function App() {
           <span className="stats-badge">
             {stats.completed} of {stats.total} complete
           </span>
+          <span className="user-badge">👤 {user.name}</span>
           <button className="btn btn-secondary" onClick={() => setDarkMode(!darkMode)}>
             {darkMode ? "☀️ Light" : "🌙 Dark"}
           </button>
+          <button className="btn btn-secondary" onClick={logout}>Logout</button>
           <button className="btn btn-primary" onClick={() => { setShowForm(!showForm); setEditData(null); }}>
             {showForm ? "Cancel" : "+ New Todo"}
           </button>
@@ -76,6 +83,8 @@ export default function App() {
           />
         </div>
       )}
+
+      <Dashboard stats={stats} todos={todos} />
 
       <nav className="view-tabs">
         <button className={view === "all" ? "active" : ""} onClick={() => setView("all")}>
@@ -118,6 +127,7 @@ export default function App() {
                       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
                     )
                   }
+                  onRefresh={fetchTodos}
                 />
               ))}
             </div>

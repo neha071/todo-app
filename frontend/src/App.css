@@ -117,6 +117,61 @@ body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
 .pagination button { padding: 8px 16px; border: 2px solid #4f46e5; background: white; color: #4f46e5; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
 
+/* Auth */
+.auth-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #f0f2f5; }
+.auth-box { background: white; border-radius: 16px; padding: 36px; width: 100%; max-width: 420px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.auth-title { font-size: 1.8rem; text-align: center; margin-bottom: 4px; }
+.auth-subtitle { text-align: center; color: #6b7280; font-size: 0.9rem; margin-bottom: 24px; }
+.auth-tabs { display: flex; gap: 0; margin-bottom: 24px; border: 2px solid #e5e7eb; border-radius: 10px; overflow: hidden; }
+.auth-tabs button { flex: 1; padding: 10px; border: none; background: white; cursor: pointer; font-size: 0.95rem; font-weight: 500; color: #6b7280; }
+.auth-tabs button.active { background: #4f46e5; color: white; }
+.auth-form { display: flex; flex-direction: column; gap: 4px; }
+.auth-error { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 4px; }
+.auth-submit { width: 100%; padding: 12px; font-size: 1rem; margin-top: 8px; }
+.auth-switch { text-align: center; margin-top: 16px; font-size: 0.875rem; color: #6b7280; }
+.auth-switch span { color: #4f46e5; cursor: pointer; font-weight: 600; }
+.auth-switch span:hover { text-decoration: underline; }
+.user-badge { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; }
+
+/* Dashboard */
+.dashboard { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 16px; }
+.dashboard-card { background: white; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); text-align: center; }
+.card-icon { font-size: 1.5rem; }
+.card-info { display: flex; flex-direction: column; align-items: center; }
+.card-value { font-size: 1.4rem; font-weight: 700; color: #1f2937; }
+.card-label { font-size: 0.75rem; color: #6b7280; font-weight: 500; }
+.dashboard-card.total { border-top: 3px solid #4f46e5; }
+.dashboard-card.active { border-top: 3px solid #f59e0b; }
+.dashboard-card.completed { border-top: 3px solid #22c55e; }
+.dashboard-card.today { border-top: 3px solid #3b82f6; }
+.dashboard-card.overdue { border-top: 3px solid #ef4444; }
+.dashboard-card.progress { border-top: 3px solid #8b5cf6; width: 100%; }
+.dashboard-progress-bar { width: 100%; height: 6px; background: #e5e7eb; border-radius: 10px; overflow: hidden; margin-top: 4px; }
+.dashboard-progress-fill { height: 100%; background: #8b5cf6; border-radius: 10px; transition: width 0.4s ease; }
+.app.dark .dashboard-card { background: #16213e; }
+.app.dark .card-value { color: #e0e0e0; }
+@media (max-width: 600px) { .dashboard { grid-template-columns: repeat(3, 1fr); } }
+
+/* Subtasks */
+.subtasks { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #e5e7eb; }
+.subtasks-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.subtasks-count { font-size: 0.75rem; color: #6b7280; white-space: nowrap; }
+.progress-bar { flex: 1; height: 6px; background: #e5e7eb; border-radius: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: #4f46e5; border-radius: 10px; transition: width 0.3s ease; }
+.subtasks-list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.subtask-item { display: flex; align-items: center; gap: 8px; font-size: 0.875rem; color: #374151; }
+.subtask-item.completed .subtask-title { text-decoration: line-through; color: #9ca3af; }
+.subtask-title { flex: 1; }
+.subtask-delete { background: none; border: none; cursor: pointer; font-size: 0.85rem; opacity: 0; padding: 2px 4px; border-radius: 4px; }
+.subtask-item:hover .subtask-delete { opacity: 1; }
+.subtask-form { display: flex; gap: 6px; align-items: center; margin-top: 6px; }
+.subtask-form input { flex: 1; padding: 6px 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 0.85rem; outline: none; }
+.subtask-form input:focus { border-color: #4f46e5; }
+.subtask-form .btn { padding: 6px 12px; font-size: 0.8rem; }
+.add-subtask-btn { background: none; border: 1px dashed #d1d5db; color: #6b7280; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; margin-top: 4px; }
+.add-subtask-btn:hover { border-color: #4f46e5; color: #4f46e5; }
+.subtask-badge { background: #ede9fe; color: #4f46e5; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+
 /* Responsive */
 @media (max-width: 600px) {
   .form-row { grid-template-columns: 1fr; }

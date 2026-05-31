@@ -19,6 +19,9 @@ export function useTodos() {
   });
 
   const fetchTodos = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
     setLoading(true);
     setError(null);
     try {
@@ -35,7 +38,7 @@ export function useTodos() {
       const statsRes = await api.getStats();
       setStats(statsRes.data);
     } catch (err) {
-      setError("Data load nahi ho saka. Backend chal raha hai?");
+      setError("Could not load data. Is the backend running?");
     } finally {
       setLoading(false);
     }
@@ -89,5 +92,6 @@ export function useTodos() {
     removeTodo,
     removeCompleted,
     removeBulk,
+    fetchTodos,
   };
 }
